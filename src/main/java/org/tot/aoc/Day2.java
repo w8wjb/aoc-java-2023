@@ -43,10 +43,7 @@ public class Day2 {
         }
 
         int getPower() {
-            int r = Math.max(maxRed, 1);
-            int g = Math.max(maxGreen, 1);
-            int b = Math.max(maxBlue, 1);
-            return r * g  * b;
+            return maxRed * maxGreen  * maxBlue;
         }
 
     }
