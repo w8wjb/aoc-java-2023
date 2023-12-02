@@ -51,7 +51,7 @@ public class Day1 {
 
         // Create a list of numbers as Strings
         var numbers = new ArrayList<String>();
-        for (int i=0; i<=9; i++) {
+        for (int i = 0; i <= 9; i++) {
             numbers.add(String.valueOf(i));
         }
 
