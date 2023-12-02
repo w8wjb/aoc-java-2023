@@ -1,101 +1,52 @@
 package org.tot.aoc;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Day2 {
 
     static class Game {
         final int id;
 
-        List<Round> rounds = new ArrayList<>();
+        int maxRed;
+        int maxGreen;
+        int maxBlue;
 
         public Game(String input) {
 
-            String[] parts = input.split(":");
-            String gameHeader = parts[0];
-            String roundList = parts[1];
+            var scanner = new Scanner(input).useDelimiter("[\\s:;,]+");
 
-            parts = gameHeader.split(" ");
-            this.id = Integer.parseInt(parts[1]);
+            scanner.next(); // Eat the "Game suffix
+            this.id = scanner.nextInt();
 
-            for (String roundStr : roundList.split(";")) {
-                String[] pairs = roundStr.split(",");
-
-                Round round = new Round();
-
-                for (String pair : pairs) {
-                    parts = pair.trim().split(" ");
-                    int cubes = Integer.parseInt(parts[0]);
-                    String color = parts[1].trim();
-                    round.setColorCount(color, cubes);
+            while (scanner.hasNextInt()) {
+                int cubes = scanner.nextInt();
+                String color = scanner.next();
+                switch (color) {
+                    case "red":
+                        maxRed = Math.max(maxRed, cubes);
+                        break;
+                    case "green":
+                        maxGreen = Math.max(maxGreen, cubes);
+                        break;
+                    case "blue":
+                        maxBlue = Math.max(maxBlue, cubes);
+                        break;
+                    default:
+                        throw new RuntimeException("Unexpected color " + color);
                 }
-
-                this.rounds.add(round);
             }
         }
 
         boolean isValid(int redLimit, int greenLimit, int blueLimit) {
-            for (var round : rounds) {
-                if (round.red > redLimit || round.green > greenLimit || round.blue > blueLimit) {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        int getMaxRed() {
-            int max = 0;
-            for (var round : rounds) {
-                max = Math.max(max, round.red);
-            }
-            return max;
-        }
-
-        int getMaxGreen() {
-            int max = 0;
-            for (var round : rounds) {
-                max = Math.max(max, round.green);
-            }
-            return max;
-        }
-
-        int getMaxBlue() {
-            int max = 0;
-            for (var round : rounds) {
-                max = Math.max(max, round.blue);
-            }
-            return max;
+            return (maxRed <= redLimit && maxGreen <= greenLimit && maxBlue <= blueLimit);
         }
 
         int getPower() {
-            int r = Math.max(getMaxRed(), 1);
-            int g = Math.max(getMaxGreen(), 1);
-            int b = Math.max(getMaxBlue(), 1);
+            int r = Math.max(maxRed, 1);
+            int g = Math.max(maxGreen, 1);
+            int b = Math.max(maxBlue, 1);
             return r * g  * b;
-        }
-
-    }
-
-    static class Round {
-        int red;
-        int green;
-        int blue;
-
-        void setColorCount(String color, int count) {
-            switch (color) {
-                case "red":
-                    red = count;
-                    break;
-                case "green":
-                    green = count;
-                    break;
-                case "blue":
-                    blue = count;
-                    break;
-                default:
-                    throw new RuntimeException("Unexpected color " + color);
-            }
         }
 
     }
