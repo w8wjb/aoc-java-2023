@@ -1,8 +1,9 @@
 package org.tot.aoc;
 
-import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.Range;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Day5 {
 
@@ -18,23 +19,21 @@ public class Day5 {
 
     private static class MapEntry {
 
-        long sourceStart;
-        long destStart;
-        long length;
+        final Range<Long> sourceRange;
+        final Range<Long> destRange;
 
         public MapEntry(long destStart, long sourceStart, long length) {
-            this.destStart = destStart;
-            this.sourceStart = sourceStart;
-            this.length = length;
+            this.destRange = Range.between(destStart, destStart + length - 1);
+            this.sourceRange = Range.between(sourceStart, sourceStart + length - 1);
         }
 
         public boolean containsSource(long value) {
-            return value >= sourceStart && value < (sourceStart + length);
+            return sourceRange.contains(value);
         }
 
         public long convertSource(long value) {
-            long offset = value - sourceStart;
-            return destStart + offset;
+            long offset = value - sourceRange.getMinimum();
+            return destRange.getMinimum() + offset;
         }
 
     }
@@ -125,35 +124,90 @@ public class Day5 {
 
         parse(input);
 
-        long lowestLocation = Long.MAX_VALUE;
+        var transformOrder = List.of(
+                seedToSoil,
+                soilToFertilizer,
+                fertilizerToWater,
+                waterToLight,
+                lightToTemperature,
+                temperatureToHumidity,
+                humidityToLocation
+        );
 
-        List<Pair<Long, Long>> pairs = new ArrayList<>();
+        List<Range<Long>> seedRanges = new ArrayList<>();
 
+
+        // The parsing was set up for individual seeds; but for part 2, convert them to ranges
         for (int i = 0; i < seeds.size(); i += 2) {
-
             long start = seeds.get(i);
             long len = seeds.get(i + 1);
-            long end = start + len;
-            System.out.println(String.format("Testing %d seede", len));
+            long end = start + len - 1; // Inclusive
+            var range = Range.between(start, end);
+            seedRanges.add(range);
+        }
 
-            for (long seed = start; seed < end; seed++) {
+        // Perform the transformations one at a time, seed-to-soil, soil-to-fertilizer, etc
+        for (var transform : transformOrder) {
 
-                long soil = followMap(seedToSoil, seed);
-                long fertilizer = followMap(soilToFertilizer, soil);
-                long water = followMap(fertilizerToWater, fertilizer);
-                long light = followMap(waterToLight, water);
-                long temperature = followMap(lightToTemperature, light);
-                long humidity = followMap(temperatureToHumidity, temperature);
-                long location = followMap(humidityToLocation, humidity);
+            // Process each group of seeds
+            // I'm using an index here and a dynamic call to size() because the list may grow
+            for (int i = 0; i < seedRanges.size(); i++) {
+                var seedRange = seedRanges.get(i);
 
-                lowestLocation = Math.min(lowestLocation, location);
+                // Check each transformation to see if it applies
+                for (var entry : transform) {
+                    var sourceRange = entry.sourceRange;
+
+                    // Check to see if the left seed bound falls withing the transform bounds
+                    if (!sourceRange.contains(seedRange.getMinimum())) {
+                        // @ [...]
+                        continue;
+                    }
+
+                    // Check to see if the right seed bound is completely contained
+                    if (!sourceRange.containsRange(seedRange)) {
+                        // [,,,{;;;]...}
+
+                        // If it extends beyond, we'll have to split it up
+                        // First, truncate the range
+                        var smallerRange = seedRange.intersectionWith(sourceRange);
+                        // And update it in the list. Ranges are immutable, so it has to be replaced
+                        seedRanges.set(i, smallerRange);
+
+                        // Next, put the part we chopped off back into the list so that we'll process it later
+                        var remainderRange = Range.between(smallerRange.getMaximum() + 1, seedRange.getMaximum());
+                        seedRanges.add(remainderRange);
+
+
+                        seedRange = smallerRange;
+
+                    }
+
+                    // Now we need to shift the seed range based on the delta between source and dest
+                    long offset = entry.destRange.getMinimum() - entry.sourceRange.getMinimum();
+                    seedRange = Range.between(
+                            seedRange.getMinimum() + offset,
+                            seedRange.getMaximum() + offset
+                    );
+
+                    // And replace the element in the list
+                    seedRanges.set(i, seedRange);
+
+                    // We found a transform that applies to this seed group; this group is done
+                    break;
+                }
 
             }
 
         }
 
+        long minLocation = Long.MAX_VALUE;
 
-        return lowestLocation;
+        for (var r : seedRanges) {
+            minLocation = Math.min(r.getMinimum(), minLocation);
+        }
+
+        return minLocation;
 
     }
 
