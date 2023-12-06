@@ -4,6 +4,7 @@ import org.apache.commons.lang3.Range;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Day5 {
 
@@ -50,9 +51,10 @@ public class Day5 {
 
             } else if (line.startsWith("seeds: ")) {
 
-                String[] nums = line.replace("seeds: ", "").split("\\s+");
-                for (var n : nums) {
-                    this.seeds.add(Long.parseLong(n));
+                try (var scanner = new Scanner(line).useDelimiter("\\D+")) {
+                    while (scanner.hasNextLong()) {
+                        this.seeds.add(scanner.nextLong());
+                    }
                 }
 
             } else if (line.startsWith("seed-to-soil")) {
