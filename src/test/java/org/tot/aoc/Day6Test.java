@@ -70,7 +70,7 @@ public class Day6Test {
         Day6 day = new Day6();
 
         Day6.Race[] races = {
-                new Day6.Race(Double.valueOf(40817772), Double.valueOf("219101213651089"))
+                new Day6.Race(40817772, 219101213651089L)
         };
 
         long result = day.solvePuzzle1(races);
