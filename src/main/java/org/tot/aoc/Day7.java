@@ -120,9 +120,6 @@ public class Day7 {
         var hands = parseHands(input, false);
         Collections.sort(hands);
 
-        for (var hand : hands) {
-        }
-
         int totalWinnings = 0;
 
         for (int i = 0; i < hands.size(); i++) {
