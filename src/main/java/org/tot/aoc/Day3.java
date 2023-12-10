@@ -1,22 +1,14 @@
 package org.tot.aoc;
 
-import java.awt.geom.Point2D;
+import org.tot.aoc.grid.Point;
+import org.tot.aoc.grid.StringGrid;
+import org.tot.aoc.grid.Vector;
+
 import java.util.*;
-import java.util.function.Predicate;
-import java.util.regex.Pattern;
 
 public class Day3 {
 
-    private static final Point NW = new Point(-1, -1);
-    private static final Point N = new Point(0, -1);
-    private static final Point NE = new Point(1, -1);
-    private static final Point W = new Point(-1, 0);
-    private static final Point E = new Point(1, 0);
-    private static final Point SW = new Point(-1, 1);
-    private static final Point S = new Point(0, 1);
-    private static final Point SE = new Point(1, 1);
 
-    private static final Point[] adjacentMoves = {NW, W, SW, NE, E, SE, N, S};
 
     private static final String symbols;
 
@@ -31,82 +23,6 @@ public class Day3 {
             tmpSymbols.append(c);
         }
         symbols = tmpSymbols.toString();
-    }
-
-    /**
-     * I made my own Point class, because I didn't really like the built-in options
-     */
-    private static class Point {
-        int x;
-        int y;
-
-        Point(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        public Point offset(Point delta) {
-            return offset(delta.x, delta.y);
-        }
-
-        public Point offset(int dx, int dy) {
-            return new Point(this.x + dx, this.y + dy);
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (obj instanceof Point) {
-                Point that = (Point) obj;
-                return this.x == that.x && this.y == that.y;
-            }
-            return false;
-        }
-
-        @Override
-        public int hashCode() {
-            int hash = 7;
-            hash = 31 * hash + x;
-            hash = 31 * hash + y;
-            return hash;
-        }
-
-        @Override
-        public String toString() {
-            return String.format("%d,%d", x, y);
-        }
-    }
-
-    /**
-     * Wrapper class to make a list of Strings appear as a grid
-     */
-    private static class StringGrid {
-
-        private final List<String> rows;
-        private final int minX = 0;
-        private final int minY = 0;
-        private final int maxX;
-        private final int maxY;
-
-        public StringGrid(List<String> rows) {
-            this.rows = rows;
-            this.maxY = rows.size() - 1;
-            this.maxX = rows.get(0).length() - 1;
-        }
-
-        /**
-         * This is 'safe' coordinate access.
-         * If the target point lies outside the bounds of the 2D array, it will return the 'empty' character, '.'
-         *
-         * @param p target point
-         * @return character at the grid point
-         */
-        public char get(Point p) {
-            // Bounds checking
-            if (p.x < minX || p.y < minY || p.x > maxX || p.y > maxY) {
-                return '.';
-            }
-            return rows.get(p.y).charAt(p.x);
-        }
     }
 
     public int solvePuzzle1(List<String> input) {
@@ -131,8 +47,8 @@ public class Day3 {
                     numberBuffer.append(c);
 
                     // Look at all the adjacent cells
-                    for (var move : adjacentMoves) {
-                        var neighbor = p.offset(move);
+                    for (var move : Vector.ADJACENT_MOVES) {
+                        var neighbor = p.add(move);
                         char adjacent = grid.get(neighbor);
                         // Check to see if the cell contains a symbol
                         if (symbols.indexOf(adjacent) > -1) {
@@ -165,7 +81,7 @@ public class Day3 {
 
     /**
      * A structure to hold the association between a part number and one or more adjacent gear symbols
-     *
+     * <p>
      * This came about when I first tried to store these in a Map of number -> gears.
      * I discovered that there are duplicate part numbers in the grid
      */
@@ -206,8 +122,8 @@ public class Day3 {
                     numberBuffer.append(c);
 
                     // Look at all the adjacent cells
-                    for (var move : adjacentMoves) {
-                        var neighbor = p.offset(move);
+                    for (var move : Vector.ADJACENT_MOVES) {
+                        var neighbor = p.add(move);
                         char adjacent = grid.get(neighbor);
 
                         // This is a specialized form of part 1, since we only care about asterisks,
