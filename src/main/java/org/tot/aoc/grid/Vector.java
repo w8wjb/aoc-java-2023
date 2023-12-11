@@ -15,10 +15,10 @@ public class Vector {
     public static final Vector[] ADJACENT_MOVES = {N, NE, E, SE, S, SW, W, NW};
 
 
-    public final int x;
-    public final int y;
+    public final long x;
+    public final long y;
 
-    public Vector(int x, int y) {
+    public Vector(long x, long y) {
         this.x = x;
         this.y = y;
     }
@@ -35,8 +35,8 @@ public class Vector {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 31 * hash + x;
-        hash = 31 * hash + y;
+        hash = 31 * hash + (int)x;
+        hash = 31 * hash + (int)y;
         return hash;
     }
 

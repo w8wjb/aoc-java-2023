@@ -9,10 +9,10 @@ public class StringGrid {
 
 
     protected final List<String> rows;
-    public final int minX = 0;
-    public final int minY = 0;
-    public final int maxX;
-    public final int maxY;
+    public final long minX = 0;
+    public final long minY = 0;
+    public final long maxX;
+    public final long maxY;
 
     public StringGrid(List<String> rows) {
         this.rows = rows;
@@ -32,6 +32,6 @@ public class StringGrid {
         if (p.x < minX || p.y < minY || p.x > maxX || p.y > maxY) {
             return '.';
         }
-        return rows.get(p.y).charAt(p.x);
+        return rows.get((int) p.y).charAt((int) p.x);
     }
 }

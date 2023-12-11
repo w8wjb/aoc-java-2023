@@ -37,8 +37,8 @@ public class Day3 {
         // Iterate through each point in the grid
         // I'm using a trick/feature of the StringGrid class here to handle numbers that are sitting on the very right edge
         // Technically maxY/maxX + 1 is beyond the grid bounds, but the grid just returns a border of empty cells
-        for (int y = grid.minY; y <= grid.maxY + 1; y++) {
-            for (int x = grid.minX; x <= grid.maxX + 1; x++) {
+        for (long y = grid.minY; y <= grid.maxY + 1; y++) {
+            for (long x = grid.minX; x <= grid.maxX + 1; x++) {
 
                 var p = new Point(x, y);
                 char c = grid.get(p);
@@ -112,8 +112,8 @@ public class Day3 {
         // Iterate through each point in the grid
         // I'm using a trick/feature of the StringGrid class here to handle numbers that are sitting on the very right edge
         // Technically maxY/maxX + 1 is beyond the grid bounds, but the grid just returns a border of empty cells
-        for (int y = grid.minY; y <= grid.maxY + 1; y++) {
-            for (int x = grid.minX; x <= grid.maxX + 1; x++) {
+        for (long y = grid.minY; y <= grid.maxY + 1; y++) {
+            for (long x = grid.minX; x <= grid.maxX + 1; x++) {
 
                 var p = new Point(x, y);
                 char c = grid.get(p);

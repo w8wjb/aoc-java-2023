@@ -118,13 +118,13 @@ public class Day10 {
         walkLoop(map, visited);
 
         int containedPoints = 0;
-        for (int y = map.minY; y <= map.maxY; y++) {
+        for (long y = map.minY; y <= map.maxY; y++) {
 
             int pathCount = 0;
 
             char lastCorner = '.';
 
-            for (int x = map.minX; x <= map.maxX; x++) {
+            for (long x = map.minX; x <= map.maxX; x++) {
                 Point p = new Point(x, y);
                 char c = map.get(p);
 
