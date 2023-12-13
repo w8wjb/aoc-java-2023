@@ -34,4 +34,11 @@ public class StringGrid {
         }
         return rows.get((int) p.y).charAt((int) p.x);
     }
+
+    public String row(int index) {
+        if (index < minY || index > maxY) {
+            return null;
+        }
+        return rows.get(index);
+    }
 }
