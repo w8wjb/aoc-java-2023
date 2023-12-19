@@ -17,7 +17,7 @@ public class Day19Test {
 
         long result = day.solvePuzzle1(lines);
 
-        Assert.assertEquals(405, result);
+        Assert.assertEquals(19114, result);
     }
 
     @Test
@@ -28,7 +28,7 @@ public class Day19Test {
 
         long result = day.solvePuzzle1(lines);
 
-        Assert.assertEquals(35210, result);
+        Assert.assertEquals(263678, result);
     }
 
     @Test
@@ -40,7 +40,7 @@ public class Day19Test {
 
         long result = day.solvePuzzle2(lines);
 
-        Assert.assertEquals(400, result);
+        Assert.assertEquals(167409079868000L, result);
     }
 
 
@@ -52,7 +52,7 @@ public class Day19Test {
 
         long result = day.solvePuzzle2(lines);
 
-        Assert.assertEquals(31974, result);
+        Assert.assertEquals(125455345557345L, result);
 
     }
 
