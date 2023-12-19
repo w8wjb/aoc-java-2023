@@ -1,5 +1,6 @@
 package org.tot.aoc;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.tot.aoc.grid.Point;
 import org.tot.aoc.grid.StringGrid;
 import org.tot.aoc.grid.Vector;
@@ -16,10 +17,10 @@ public class Day10 {
 
         public Point findStart() {
 
-            for (int y = 0; y < rows.size(); y++) {
-                var row = rows.get(y);
+            for (int y = 0; y < grid.length; y++) {
+                var row = grid[y];
 
-                int x = row.indexOf('S');
+                int x = ArrayUtils.indexOf(row, 'S');
                 if (x > -1) {
                     return new Point(x, y);
                 }

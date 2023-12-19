@@ -28,19 +28,19 @@ public class Day13Test {
 
         long result = day.solvePuzzle1(lines);
 
-        Assert.assertEquals(9563821, result);
+        Assert.assertEquals(35210, result);
     }
 
     @Test
     public void testSample2() {
 
-        List<String> lines = ResourceHelper.loadLinesFromFile("Day13/sample1.txt");
+        List<String> lines = ResourceHelper.loadLinesFromFile("Day13/sample.txt");
 
         Day13 day = new Day13();
 
-        long result = day.solvePuzzle2(lines, 10);
+        long result = day.solvePuzzle2(lines);
 
-        Assert.assertEquals(1030, result);
+        Assert.assertEquals(400, result);
     }
 
 
@@ -50,9 +50,9 @@ public class Day13Test {
 
         Day13 day = new Day13();
 
-        long result = day.solvePuzzle2(lines, 1000000);
+        long result = day.solvePuzzle2(lines);
 
-        Assert.assertEquals(827009909817L, result);
+        Assert.assertEquals(31974, result);
 
     }
 

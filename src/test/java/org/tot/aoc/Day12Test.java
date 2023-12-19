@@ -11,7 +11,7 @@ public class Day12Test {
     @Test
     public void testSample1() {
 
-        List<String> lines = ResourceHelper.loadLinesFromFile("Day12/sample1.txt");
+        List<String> lines = ResourceHelper.loadLinesFromFile("Day12/sample.txt");
 
         Day12 day = new Day12();
 

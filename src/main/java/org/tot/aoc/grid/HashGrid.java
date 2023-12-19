@@ -1,12 +1,8 @@
 package org.tot.aoc.grid;
 
-import org.apache.commons.lang3.tuple.Pair;
+import java.util.*;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
-public class HashGrid<V> extends HashMap<Point, V> {
+public class HashGrid<V> extends HashMap<Point, V> implements Grid<V> {
 
     public long minX = 0;
     public long minY = 0;
@@ -21,6 +17,7 @@ public class HashGrid<V> extends HashMap<Point, V> {
         this.putAll(points);
     }
 
+    @Override
     public V put(Point p, V v) {
         minX = Math.min(p.x, minX);
         maxX = Math.max(p.x, maxX);
@@ -29,6 +26,7 @@ public class HashGrid<V> extends HashMap<Point, V> {
         return super.put(p, v);
     }
 
+    @Override
     public V get(Point p) {
         return super.get(p);
     }
@@ -50,4 +48,38 @@ public class HashGrid<V> extends HashMap<Point, V> {
 
     }
 
+    class RowWiseIterator implements Iterator<Location<V>> {
+
+        int currY = 0;
+        int currX = 0;
+
+        @Override
+        public boolean hasNext() {
+            return currX >= minX
+                    && currX <= maxX
+                    && currY >= minY
+                    && currY <= maxY;
+        }
+
+        @Override
+        public Location<V> next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+
+            Point p = new Point(currX, currY);
+            V value = get(p);
+            currX++;
+            if (currX > maxX) {
+                currX = 0;
+                currY++;
+            }
+            return new Location<>(p, value);
+        }
+    }
+
+    @Override
+    public Iterator<Location<V>> iterator() {
+        return new RowWiseIterator();
+    }
 }

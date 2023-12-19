@@ -3,7 +3,7 @@ package org.tot.aoc.grid;
 public class Vector {
 
 
-    public static final Vector NW = new Vector(-1, -1);
+    public static final Vector NW = new Vector(-1   , -1);
     public static final Vector N = new Vector(0, -1);
     public static final Vector NE = new Vector(1, -1);
     public static final Vector W = new Vector(-1, 0);
